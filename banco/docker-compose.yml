@@ -1,0 +1,26 @@
+# Computador B (servidor, NÃO confiável): PostgreSQL com TLS.
+# Antes: ./gen_certs.sh <IP-do-servidor> e copie .env.example para .env
+services:
+  db:
+    image: postgres:16
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      POSTGRES_DB: sse_db
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./certs:/certs:ro
+      - ./initdb:/docker-entrypoint-initdb.d:ro
+      - ./sql:/sql:ro
+    command: >
+      bash -c "install -m 600 -o postgres -g postgres /certs/server.key /var/lib/postgresql/server.key &&
+      exec docker-entrypoint.sh postgres
+      -c ssl=on
+      -c ssl_cert_file=/certs/server.crt
+      -c ssl_key_file=/var/lib/postgresql/server.key
+      -c password_encryption=scram-sha-256
+      -c log_statement=all"
+volumes:
+  pgdata:

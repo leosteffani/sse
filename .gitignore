@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.venv/
+# segredos: nunca versionar
+*.sse
+*.sse.tmp
+chave.bin
+*.key
+banco/.env
+banco/certs/
+aplicacao/certs/
+demo.db
+evidencias/*.pcap

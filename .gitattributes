@@ -1,0 +1,4 @@
+# scripts executados dentro do container Linux precisam de fim de linha LF
+*.sh text eol=lf
+*.yml text eol=lf
+*.sql text eol=lf
